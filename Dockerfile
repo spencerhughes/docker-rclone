@@ -34,9 +34,18 @@ RUN apt-get -qq install \
 ENV GOPATH=/go
 ENV PATH="${GOPATH}/bin:${PATH}"
 
-RUN go get -u -v github.com/ncw/rclone && \
-	chmod og+x /go/bin/rclone && \
-	echo "PATH=/go/bin:${PATH}" > /etc/environment
+#RUN go get -u -v github.com/ncw/rclone && \
+#	chmod og+x /go/bin/rclone && \
+#	echo "PATH=/go/bin:${PATH}" > /etc/environment
+
+RUN cd /tmp && \
+	git clone https://github.com/ncw/rclone.git && \
+	cd rclone && \
+	go build && \
+	./rclone version && \
+	mkdir -p ${GOPATH}/bin && \
+	echo "PATH=/go/bin:${PATH}" > /etc/environment && \
+	cp rclone ${GOPATH}/bin/rclone
 
 ENV CONT_USER=rclone
 ENV CONT_CMD="rclone"
