@@ -38,14 +38,18 @@ ENV PATH="${GOPATH}/bin:${PATH}"
 #	chmod og+x /go/bin/rclone && \
 #	echo "PATH=/go/bin:${PATH}" > /etc/environment
 
+#RUN cd /tmp && \
+#	git clone https://github.com/ncw/rclone.git && \
+#	cd rclone && \
+#	go build && \
+#	./rclone version && \
+#	mkdir -p ${GOPATH}/bin && \
+#	echo "PATH=/go/bin:${PATH}" > /etc/environment && \
+#	cp rclone ${GOPATH}/bin/rclone
+
 RUN cd /tmp && \
-	git clone https://github.com/ncw/rclone.git && \
-	cd rclone && \
-	go build && \
-	./rclone version && \
-	mkdir -p ${GOPATH}/bin && \
-	echo "PATH=/go/bin:${PATH}" > /etc/environment && \
-	cp rclone ${GOPATH}/bin/rclone
+	curl -L https://github.com/ncw/rclone/releases/download/v1.46/rclone-v1.46-linux-amd64.deb -O && \
+	dpkg -i rclone-v1.46-linux-amd64.deb
 
 ENV CONT_USER=rclone
 ENV CONT_CMD="rclone"
